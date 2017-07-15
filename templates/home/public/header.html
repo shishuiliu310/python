@@ -1,0 +1,78 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<meta name="keywords" content="{{keywords}}">
+
+<LINK rel="stylesheet" type="text/css" href="{% static "home/css/iconfont.css" %}">
+<LINK rel="stylesheet" type="text/css" href="{% static "home/css/style.css" %}">
+<script type="text/javascript" src="{% static "home/js/jquery.js" %}"></script>
+<script type="text/javascript" src="{% static "home/js/jquery.slider.js" %}"></script>
+<script type="text/javascript" src="{% static "home/js/smohan.face.js" %}"></script>
+<script src="{% static "home/js/script.js" %}"></script>
+<script type="text/javascript" src="{% static "home/js/date.js" %}"></script>
+
+</head>
+<body>
+<!--顶部-->
+<!--顶部固定-->
+<section class="absolute">
+	<div>
+        {% if request.session.uid %}
+      		<span>欢迎&nbsp[&nbsp{{ request.session.username }}&nbsp]&nbsp回家！</span>
+      		<span class="absolute_right">   
+            管家：<a href="">{{ request.session.username }}</a>
+            <span>|</span>
+            <a href="/user/loginout">退出</a>
+          </span>
+        {% else %}
+          <span>想家吗？想就快快注册吧！</span>
+          <span class="absolute_right">
+      			<a href="/user/login">登录</a>
+      			<span>|</span>
+      			<a href="/user/register">注册</a>
+      		</span>    
+        {% endif %}
+	</div>
+</section>
+<!--导航-->
+<header class="header">
+  <nav>
+  	<div class="logo"><img src="{% static "home/images/logo.png" %}"></div>
+  	<ul>
+        <li><a href="/index">首页</a></li>
+        {% for v in menu %}
+    	  <li><a href="/menu?m={{v.id}}" target="_blank">{{v.menuname}}</a></li>
+        {% endfor %}
+        <!--搜索-->
+        <li id="search"><i class="iconfont">&#xe60d;</i></li>
+
+    </ul>
+  </nav>
+  <!--搜索-->
+  <div id="search-main">
+    <div id="searchbar">
+        <form id="searchform" action="" method="get">
+          <input id="s" type="text" required="" placeholder="输入搜索内容" name="tag" value="">
+          <button id="searchsubmit" type="submit">搜索</button>
+        </form>
+    </div>
+  </div>                      
+</header>
+
+<!--焦点图-->
+<section>
+	<div id="slider">
+    {% for v in banner %}
+	  <div class="slide">
+      <a href="{{v.url}}" target="_blank">
+        <img class="diapo" border="0" src="{{ v.banner }}" width="800" height="360">
+      </a>
+	    <div class="text">{{v.msg}}</div>    
+	  </div>
+    {% endfor %}
+	</div>
+</section>

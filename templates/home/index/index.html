@@ -1,0 +1,70 @@
+<!--左侧内容-->
+
+{% extends "home/layout/layout.html" %}
+{% block content %}
+{% load tags %} 
+<section class="setion">
+    {% if article %}
+    {% for vo in article %}  
+	<article class="article">
+        <h1><span class="category">
+        <a href="{% url 'menu' vo.menu_id %}">{{ vo.menu.menuname }}</a></span>
+            <a href="/article?id={{ vo.pk }}">{{ vo.title }}</a></h1>
+        <div class="article_box">
+            <img src="{{ vo.picture }}" class="title_picture">
+            <div class="article_article">
+                <p>{{ vo.content|slice:"150" }}...</p>
+                <ul>
+                    <li class="author">
+                    <i class="iconfont">&#xe610;</i>
+                    <a href="">{{ vo.writer }}</a></li>
+                    <li><i class="iconfont">&#xe611;</i>{{ vo.add_time|timestampToDate }}</li>
+                    <li title="热度"><i class="iconfont">&#xe605;</i>{{ vo.hot }}</li>
+                    <li class="commint"  title="评论">
+                    <i class="iconfont">&#xe606;</i>
+                    <a href="">{{ vo.comment_num }}</a></li>
+                    <li class="hobby">
+                    <i class="iconfont">&#xe601;</i>
+                    <a href="javascript:;" title="喜欢" data_id="">{{ vo.love }}</a></li>
+                </ul>
+            </div>
+        </div>
+    </article>
+    {% endfor %}
+
+    <!--分页-->
+    <div class="pagination pagination-centered">
+        <ul>
+
+            {% ifnotequal article.number 1 %}
+                <li class="active"><a href="?page=1&m={{ cur_menu }}">首页</a></li>
+            {% endifnotequal %}
+            {% if article.has_previous %}
+                <li><a href="?page={{ article.previous_page_number }}&m={{ cur_menu }}">前一页</a></li>
+            {% else %}
+                <li class="active"><a>前一页</a></li>
+            {% endif %}
+            
+            {% for p in page_range %}
+                {% ifequal p article.number %}
+                    <li class="current"><a>{{p}}</a></li>
+                {% else %}
+                    <li><a href="?page={{p}}&m={{ cur_menu }}" title="第{{p}}页">{{p}}</a><li>
+                {% endifequal %}
+            {% endfor %}
+
+            {% if article.has_next %}
+                <li><a href="?page={{ article.next_page_number }}&m={{ cur_menu }}">后一页</a></li>
+            {% else %}
+                <li class="active"> <a>后一页</a></li>
+            {% endif %}
+            {% ifnotequal article.number article.paginator.num_pages %}
+                <li class="active"><a href="?page={{ article.paginator.num_pages }}&m={{ cur_menu }}">尾页</a></li>
+            {% endifnotequal %}
+        </ul>
+    </div>
+    {% endif %}
+</section>
+{% endwith %}
+{% endblock content %}
+    

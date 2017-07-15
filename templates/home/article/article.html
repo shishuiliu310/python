@@ -1,0 +1,183 @@
+{% extends "home/layout/layout.html" %}
+{% block content %}
+{% load tags %}
+<!--分类名-->
+<div class="category_name">
+	<p>
+        <i class="iconfont">&#xe612;</i>
+        <span class="article_place">当前位置：
+        <a href="/index">首页</a>&nbsp;>&nbsp;
+        <a href="/menu?m={{ article.menu_id }}">{{ article.menu.menuname }}</a>&nbsp;>&nbsp;{{ article.title }}</span>
+    </p>
+</div>
+<!--左侧内容-->
+<section class="setion">
+	<article class="article article_border">
+        <h1>{{ article.title }}</h1>
+        <div  class="article_article_att">
+            <ul>
+                <li class="author">
+                <i class="iconfont">&#xe610;</i>
+                <a href="">{{ article.writer }}</a></li>
+                <li><i class="iconfont">&#xe611;</i>{{ article.add_time|timestampToDate }}</li>
+                <li title="热度"><i class="iconfont">&#xe605;</i>{{ article.hot }}</li>
+                <li class="commint" title="评论">
+                <i class="iconfont">&#xe606;</i>
+                <a href="">{{ article.comment_num }}</a></li>
+                <li class="hobby">
+                <i class="iconfont">&#xe601;</i>
+                <a href="javascript:;" title="喜欢" data_id="{{ article.pk }}">{{ article.love }}</a></li>
+            </ul>
+        </div>
+        <article>
+            {{ article.content|safe }}
+        <div class="article_index">
+
+        {% if upArticle %}
+        {% for up in upArticle %}
+            上一篇：<a href="article?id={{ up.id }}">{{ up.title }}</a> <br/>
+        {% endfor %}   
+        {% else %}
+            上一篇：没有了！ <br/>
+        {% endif %}
+        {% if downArticle %}
+            {% for down in downArticle %}
+                下一篇：<a href="article?id={{ down.id }}">{{ down.title }} </a><br/>
+            {% endfor %}
+        {% else %}
+            下一篇：没有了！ <br/>
+        {% endif %}
+        
+            <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone"></a><a href="#" class="bds_tsina" data-cmd="tsina"></a><a href="#" class="bds_tqq" data-cmd="tqq"></a><a href="#" class="bds_renren" data-cmd="renren"></a><a href="#" class="bds_weixin" data-cmd="weixin"></a></div>
+            <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+        </div>
+        </article>
+    <section>
+    {% if linkArticle %}
+        <div class="relates" id="relates">
+            <h3 class="titlec"><strong>相关阅读</strong></h3>
+            <ul>
+            {% for v in linkArticle %}
+                <li>
+                    <a href="/article?id={{ v.id }}" class="thumb">
+                        <div class="single-post-relate__image">
+                            <img src="{{ v.picture }}" title="" alt="">
+                        </div>
+                    </a>
+                    <a class="xigbt" href="/article?id={{ v.id }}">{{ v.title|slice:"8" }}...</a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    </section>   
+    <section>   
+        <h3 class="titlec"><strong>评论</strong></h3>
+        <label id="AjaxCommentBegin"></label>
+    {% if pcomment %}
+    {% for p in pcomment %}
+        <ul class="msg" id="cmt19">
+            <li class="msgname">
+                <img class="avatar" src="{{ p.user__picture }}" alt="" width="40">&nbsp;
+                <span class="commentname">
+                <a href="" rel="nofollow" target="_blank">{{ p.user__username }}</a>
+                </span><br>
+                <small>&nbsp;发布于&nbsp;{{ p.comment_time|timestampToDate }}&nbsp;&nbsp;
+                {% if request.session.uid %}
+                    <span class="revertcomment">
+                        <a href="#reply_Comment" onclick="replyComment({{ p.id }})">
+                        回复该评论
+                        </a>
+                    </span>
+                {% endif %}
+                </small>
+            </li>
+            <li class="msgarticle">
+            <div class="Zones">
+            {{ p.content|safe }}
+            </div>
+            <label id="AjaxComment19"></label>
+            {% for c in p.son %}
+                <ul class="msg" id="cmt20">
+                    <li class="msgname">
+                        <img class="avatar" src="{{ c.user__picture }}" alt="" width="32">&nbsp;
+                        <span class="commentname"><a href="" rel="nofollow" target="_blank"{{ c.user__username }}></a>
+                        </span><br>
+                        <small>&nbsp;发布于&nbsp;{{ c.comment_time|timestampToDate }}&nbsp;&nbsp;
+                        {% if request.session.uid %}
+                            <span class="revertcomment">
+                            <a href="#reply_Comment" onclick="replyComment({{ c.id }})">
+                            回复该评论
+                            </a>
+                            </span>
+                        {% endif %}
+                        </small>
+                    </li>
+                    <li class="msgarticle">
+                    <div class="Zones">
+                        {{ c.content|safe }}
+                    </div>
+                    <label id="AjaxComment20"></label> 
+                    </li>
+                </ul>
+            {% endfor %}
+            </li>
+        </ul>
+    {% endfor %}
+    {% else %}
+    <ul class="msg" id="cmt19">
+            <li class="msgname">暂无评论！</li>
+    </ul>
+    {% endif %}
+    <div style="margin-bottom: 30px;" id="reply_Comment">
+    </section>
+
+    <section>
+        
+        <div class="post" id="divCommentPost">
+            <p class="posttop">
+                <a name="comment">发表评论:</a>
+            </p>
+            <form id="frmSumbit" target="_self" method="post" action="">
+                <div class="pinglun" id="Smohan_FaceBox">
+                <div>
+                    <textarea name="content" id="Smohan_text" class="smohan_text" cols="50" rows="4" tabindex="5" placeholder='登录之后才可以发表评论哟！'></textarea>
+                    <input name="sumbit" type="submit" tabindex="6" value="提交" class="button">
+                    </div>
+                    {% if request.session.uid %}
+                        <span class="loginBtn">您已登录</span>
+                    {% else %}
+                        <a href="/user/login" class="loginBtn">未登录</a>
+                    {% endif %}
+                    <a href="javascript:void(0)" class="face" title="表情"></a>
+                    <span style="color: red;margin: 0px 5px;">◎欢迎参与讨论，请在这里发表您的看法、交流您的观点。</span>
+                   
+                </div>
+            </form>
+            <p class="postbottom"></p>
+        </div>
+    </section>
+    </article>
+</section>
+<script type="text/javascript">
+    $(function (){
+        
+        $("a.face").smohanfacebox({
+            Event : "click",    //触发事件  
+            divid : "Smohan_FaceBox", //外层DIV ID
+            textid : "Smohan_text" //文本框 ID
+        });
+        //匹配所有的.Zones元素
+        var $elements = $('.Zones');
+        //each对于每个匹配的元素所要执行的函数
+        $elements.each(function() {
+            $(this).replaceface($(this).html());
+        }); 
+        
+    });
+    //获取当前点击的回复位置id
+    function replyComment(i){
+        var obj = document.getElementById("reply_id").value = i;
+    }
+</script>
+{% endblock content %}

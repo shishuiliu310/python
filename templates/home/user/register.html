@@ -1,0 +1,70 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>	
+<head>
+<title>Register</title>
+<meta name="keywords" content="" />
+<link href="{% static "home/css/style.css" %}" rel='stylesheet' type='text/css' />
+<LINK rel="stylesheet" type="text/css" href="{% static "home/css/iconfont.css" %}">
+<script src="{% static "home/js/jquery.js" %}"></script>
+<script type="text/javascript" src="{% static "home/js/jq.js" %}"></script>
+</head>
+<body class="login_bg">
+<!--气球-->
+<div class="qiqiu1 qiqiu">
+	<img src="{% static "home/images/201101asdsaf22135412367.png" %}"/>
+    <div class="text">love</div>
+</div>
+	<div class="qiqiu2 qiqiu">
+	<img src="{% static "home/images/201101ddd22135412367.png" %}"/>
+    <div class="text">love</div>
+</div>
+	<div class="qiqiu3 qiqiu">
+	<img src="{% static "home/images/20110122135aaaaa412367.png" %}"/>
+    <div class="text">love</div>
+</div>
+	<div class="qiqiu4 qiqiu">
+	<img src="{% static "home/images/20110122135s412367.png" %}"/>
+    <div class="text">love</div>
+</div>
+	<div class="qiqiu5 qiqiu">
+	<img src="{% static "home/images/20110122135412367.png" %}"/>
+    <div class="text">love</div>
+</div>
+
+<div class="yun1 yun"> </div>
+<div class="yun2 yun"> </div>
+<div class="yun3 yun"> </div>	
+<div class="yun4 yun"> </div>
+<!--登录-->
+<div class="login-form">
+	<div class="register">
+		<a href="/user/login"><i class="iconfont">&#xe615;</i>登录</a>
+	</div>
+	<div class="head-info"><a href="/index">返回首页</a></div>
+	<div class="clear"> </div>
+	<form action="/user/register" method="post">
+		{% csrf_token %}
+		账号：<input type="text" class="text" name="username" placeholder="请输入用户名"><br />
+		昵称：<input type="text" class="text" name="truename" placeholder="请输入真实姓名"><br />
+		邮箱：<input type="text" class="text" name="email" placeholder="请输入邮箱"><br />
+		密码：<input type="password" name="password" placeholder="请输入密码"><br />
+		<div class="caption">
+		<span>验证码：</span>
+		<input type="text" name="caption" value="" maxlength="4">
+		<img src="/user/code/" onclick="ChangeCode(this);">
+		</div>
+		<div class="signin">
+			<input type="submit" value="注册" >
+		</div>
+		{{ rlt }}
+	</form>	
+</div>
+<script>
+	// 点击一次,更改图片内容,
+    function ChangeCode(ths){
+        ths.src = ths.src + '?';
+    }
+</script>
+</body>
+</html>

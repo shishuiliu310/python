@@ -1,0 +1,73 @@
+<footer class="footer">
+<div class="fat">
+    <section class="partner">
+        <ul>
+            <h2>再看看</h2>
+            {% for v in menu %}
+                <p><a href="/menu?m={{ v.id }}">{{ v.menuname }}</a></p>
+            {% endfor %}
+        </ul>
+    </section>
+    <section class="links">
+        <h2>友情链接</h2>
+        <ul>
+        <volist name="flink" id="vo">
+            <li><a href="" target="_blank"></a></li>
+        </volist>     
+        </ul>
+    </section>
+    <section class="contact">
+        <h2>一直在努力……</h2>
+        <p>有些人很坚强，喜欢在流泪的人面前开导逗笑</p>
+        <p>又无所不能，总是轻而易举地帮助别人解决难题</p>
+        <p>为了理想再苦再累也心甘情愿</p>
+        <p>但面对自己的创伤，他们只会躲在角落里看着伤口变大</p>
+        <p>只有面对最信赖的人时，才会丢盔弃甲</p>
+        <p>安静地流下眼泪。在哭过之后，笑着擦干眼泪</p>
+        <p>说，没关系.......</p>
+    </section>
+</div>
+
+<div id="copright">
+    <span>&nbsp;</span>
+</div>
+
+</footer>
+
+<!-- 在线qq -->
+<div id="top"></div>
+
+<script type="text/javascript">
+	//焦点图
+    slider.init();
+    $(function(){
+        $("#slider div:last").trigger('mouseover');
+        $('#search').toggle(
+            function () {
+                $(".header").css("margin-bottom","30px");
+                $("#search-main").fadeIn("slow");
+                
+            },
+            function () {
+                $(".header").css("margin-bottom","0px");
+                $("#search-main").hide();
+        });
+        //用户喜欢
+        $('.hobby a').on('click',function(){
+            var id = $(this).attr('data_id');
+            $.ajax({
+               type: "GET",
+               url: "" + id,
+               error: function(msg){
+                 alert( msg );
+                },
+               success: function(msg){
+                 alert( msg );
+                 window.location.href = window.location.href;
+                }
+
+            })
+        })
+    });
+    
+</script>
